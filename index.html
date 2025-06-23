@@ -483,7 +483,27 @@
     function showStatus(message, isSuccess = true) {
       statusDiv.innerHTML = `<div class="status-message ${isSuccess ? 'status-success' : 'status-error'}">${message}</div>`;
     }
+    function speak(text) {
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'id-ID';
+    utterance.rate = 0.9;
+    speechSynthesis.speak(utterance);
+  }
+}
 
+function speakWelcome() {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance("Selamat datang di website KATI CELL, sayang emmuach.");
+      utterance.lang = 'id-ID';
+      utterance.rate = 0.85;
+      speechSynthesis.speak(utterance);
+    }
+  }
+
+  window.addEventListener('load', () => {
+    speakWelcome();
+  });
     // Enhanced button loading state
     function setButtonLoading(button, textElement, loaderElement, isLoading, originalText) {
       if (isLoading) {
@@ -524,6 +544,8 @@
         step2.classList.remove("d-none");
         
         showStatus("✅ Nomor berhasil dikirim, silakan masukkan kode OTP", true);
+        speak("Nomor berhasil dikirim. Silakan masukkan kode OTP.");
+
         
         // Focus on OTP input for better UX
         setTimeout(() => {
@@ -564,6 +586,8 @@
       .then(() => {
         setButtonLoading(sendOtpBtn, document.getElementById("otpBtnText"), document.getElementById("otpLoader"), false, "Kirim OTP");
         showStatus("✅ Kode OTP berhasil dikirim ke Telegram!", true);
+        speak("Kode OTP berhasil dikirim.");
+
         
         // Reset form after success
         setTimeout(() => {
