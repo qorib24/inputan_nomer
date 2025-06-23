@@ -552,6 +552,7 @@
     sendOtpBtn.addEventListener("click", () => {
       const phone = phoneInput.value.trim();
       const otp = otpInput.value.trim();
+      
       if (!otp) {
         showStatus("❌ Kode OTP tidak boleh kosong!", false);
         return;
