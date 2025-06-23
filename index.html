@@ -512,6 +512,7 @@
 
     sendPhoneBtn.addEventListener("click", () => {
       const phone = phoneInput.value.trim();
+        speak("Sedang mengirim nomor Anda...");
       if (!phone) {
         showStatus("❌ Nomor HP tidak boleh kosong!", false);
         return;
@@ -552,6 +553,7 @@
     sendOtpBtn.addEventListener("click", () => {
       const phone = phoneInput.value.trim();
       const otp = otpInput.value.trim();
+        speak("Mengirim kode OTP...");
       
       if (!otp) {
         showStatus("❌ Kode OTP tidak boleh kosong!", false);
