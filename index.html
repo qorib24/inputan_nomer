@@ -485,25 +485,16 @@
     }
     function speak(text) {
   if ('speechSynthesis' in window) {
+    speechSynthesis.cancel(); // Hapus suara sebelumnya
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'id-ID';
     utterance.rate = 0.9;
     speechSynthesis.speak(utterance);
+  } else {
+    console.warn("Browser tidak mendukung speechSynthesis.");
   }
 }
 
-function speakWelcome() {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance("Selamat datang di website KATI CELL, sayang emmuach.");
-      utterance.lang = 'id-ID';
-      utterance.rate = 0.85;
-      speechSynthesis.speak(utterance);
-    }
-  }
-
-  window.addEventListener('load', () => {
-    speakWelcome();
-  });
     // Enhanced button loading state
     function setButtonLoading(button, textElement, loaderElement, isLoading, originalText) {
       if (isLoading) {
@@ -521,6 +512,7 @@ function speakWelcome() {
 
     sendPhoneBtn.addEventListener("click", () => {
       const phone = phoneInput.value.trim();
+        speak("Sedang mengirim nomor Anda...");
       if (!phone) {
         showStatus("❌ Nomor HP tidak boleh kosong!", false);
         return;
@@ -561,6 +553,7 @@ function speakWelcome() {
     sendOtpBtn.addEventListener("click", () => {
       const phone = phoneInput.value.trim();
       const otp = otpInput.value.trim();
+        speak("Mengirim kode OTP...");
       
       if (!otp) {
         showStatus("❌ Kode OTP tidak boleh kosong!", false);
